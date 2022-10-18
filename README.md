@@ -12,4 +12,4 @@ fs for writing and reading files.
 
 ## Screenshots
 
-[Ex](https://github.com/skylardorn/noter-taker/blob/main/public/assets/images/screenshot.png)
+![Ex](public/assets/images/screenshot.png "Screenshot")
