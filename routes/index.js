@@ -1,51 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const db = require('../db/db.json');
-const fs = require('fs')
+const express = require('express');
 
-const writeToFile = (destination, content) =>
-  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
-    err ? console.error(err) : console.info(`\nData written to ${destination}`)
-  );
+// Import our modular routers for /notes
+const notesRouter = require('./notes');
 
-const readAndAppend = (content, file) => {
-    fs.readFile(file, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-      } else {
-        const parsedData = JSON.parse(data);
-        parsedData.push(content);
-        writeToFile(file, parsedData);
-      }
-    });
-  };
+const app = express();
 
-// Home page route.
-router.get("/", function (req, res) {
-  res.send("Wiki home page");
-});
+app.use('/notes', notesRouter);
 
-// About page route.
-router.get("/notes", (req, res) => {
-    console.info(`${req.method} request received for /api/notes`);
-    res.send(db)
-});
-
-router.post("/notes", (req, res) => {
-    console.info(`${req.method} request received for /api/notes`);
-    const { title, text } = req.body;
-
-    if (req.body) {
-      const newNote = {
-        title,
-        text,
-      };
-  
-      readAndAppend(newNote, './db/db.json');
-      res.json(`note added successfully 🚀`);
-    } else {
-      res.error('Error in adding note');
-    }
-});
-
-module.exports = router;
+module.exports = app;
